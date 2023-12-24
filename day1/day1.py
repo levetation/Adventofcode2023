@@ -18,8 +18,19 @@ def buildInt(string):
     # check for words
     for word in words:
         if word in string:
-            wordPosition = string.find(word)
-            db[wordPosition] = word
+            # dealing with repeats: this is probs dumb
+            if int(string.count(word)) > 1:
+                wordPosition = string.find(word)
+                db[wordPosition] = word
+                counter = string.count(word)
+                while counter > 0:
+                    newString = string[wordPosition+len(word)::]
+                    wordPosition = newString.find(word)
+                    db[wordPosition] = word
+                    counter -= 1
+            else:
+                wordPosition = string.find(word)
+                db[wordPosition] = word
 
     # find lowest and highest positions and their assoc values
     first = convertToInteger(db[min(db)])
@@ -36,19 +47,27 @@ if __name__ == '__main__':
     "xtwone3four": 24,
     "4nineeightseven2": 42,
     "zoneight234": 14,
-    "7pqrstsixteen": 76}
+    "7pqrstsixteen": 76,
+    "ftgbfqrzslqrcmmeightnjjrrkvhntcv1djmbqztrkvlqfkshoneightggd": 88,
+    }
 
     passed = 0
     for string, value in examples.items():
         print(string)
         builtInt = buildInt(string)
         print(builtInt)
-        if builtInt == value: print("Pass"); passed +=1
+        if builtInt == value: 
+            print("Pass")
+            passed +=1
+        else:
+            print(f"Test failed: {string}, \ngot {builtInt}, should be {examples[string]}")
 
     ## Solve problem if func passes test
-    if passed >= 7:
-        print("Tests passed!")
-        with open('day1/input.txt') as inputText:
+    if passed >= 8:
+        with open('input.txt') as inputText:
             inputText = inputText.read().split('\n')
         for string in inputText: print(string); print(buildInt(string)) 
+        print("Tests passed!")
         print("Final answer:", sum([buildInt(row) for row in inputText]))
+    else:
+        print("Tests failed :(")
