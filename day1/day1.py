@@ -48,7 +48,7 @@ if __name__ == '__main__':
     ## Solve problem if func passes test
     if passed >= 7:
         print("Tests passed!")
-        with open('input.txt') as inputText:
+        with open('day1/input.txt') as inputText:
             inputText = inputText.read().split('\n')
         for string in inputText: print(string); print(buildInt(string)) 
         print("Final answer:", sum([buildInt(row) for row in inputText]))
